@@ -1,3 +1,12 @@
+"""
+bart_routes.py 📊
+---------------------
+FastAPI router exposing endpoints for the BartAgent.
+
+Routes:
+    - /api/bart/ask: Accepts natural language input for market insights.
+"""
+
 from fastapi import APIRouter
 from pydantic import BaseModel
 from shared.agents.bart_agent import BartAgent

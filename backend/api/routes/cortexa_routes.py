@@ -1,3 +1,12 @@
+"""
+cortexa_routes.py 🧬
+-------------------------
+FastAPI router exposing endpoints for the CortexaAgent.
+
+Routes:
+    - /api/cortexa/ask: General NLP and prediction endpoint.
+"""
+
 from fastapi import APIRouter
 from pydantic import BaseModel
 from shared.agents.cortexa_agent import CortexaAgent
