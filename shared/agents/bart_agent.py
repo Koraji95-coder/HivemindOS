@@ -12,15 +12,28 @@ Goals:
 
 from shared.agents.agent_base import AgentBase
 from shared.ai.gpt_client import GPTClient
+from shared.state.session import session
 
 
 class BartAgent(AgentBase):
     def __init__(self):
         """
-        Initializes Bart with an analytical tone and name.
+        Initializes the agent with session-level context:
+
+        - Loads the current user's name, role, and device ID
+        - Allows responses to be personalized per session
+        - Enables future logic for role-based filtering, scoped memory, and user-based agent behavior
+
+        Session values pulled from `SessionManager`:
+        - self.username → User display name (fallback: guest)
+        - self.role     → Role label (Owner / Admin / Guest)
+        - self.device_id→ Source device ID or fallback token
         """
         super().__init__(name="Bart")
         self.gpt = GPTClient(agent="Bart")
+        self.username = session.get_user_name()
+        self.role = session.get_user_role()
+        self.device_id = session.get_device_id()
 
     def ask(self, prompt: str) -> str:
         """
