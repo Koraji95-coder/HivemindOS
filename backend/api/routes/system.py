@@ -1,34 +1,55 @@
 """
-system.py 🧠
--------------
-System-level API endpoints for HivemindOS.
+System routes for diagnostics 🧠
+--------------------------------
+Exposes health check, status info, and uptime monitoring.
 
-Includes:
-- /health
-- /uptime
-- /version
+Endpoints:
+- GET /health
+- GET /status
+- GET /uptime
 """
 
+import os
 import time
+from datetime import datetime, timezone
+
 from fastapi import APIRouter
+
 from shared.meta.version import __version__
-from datetime import datetime
 
-router = APIRouter(tags=["System"])
-BOOT_TIME = time.time()
+router = APIRouter()
 
-@router.get("/health")
+# App start time (UTC)
+START_TIME = datetime.now(timezone.utc)
+
+def get_uptime_seconds() -> int:
+    return int((datetime.now(timezone.utc) - START_TIME).total_seconds())
+
+@router.get("/health", tags=["System"])
 def health_check():
-    """Health ping for uptime monitors."""
-    return {"status": "ok", "booted": datetime.utcnow().isoformat()}
+    """
+    Quick check to confirm API is reachable.
+    """
+    return {"status": "healthy"}
 
-@router.get("/uptime")
+@router.get("/uptime", tags=["System"])
 def get_uptime():
-    """Returns how long the app has been running."""
-    uptime = round(time.time() - BOOT_TIME, 2)
-    return {"uptime_seconds": uptime}
+    """
+    Returns how long the app has been running.
+    """
+    seconds = get_uptime_seconds()
+    hours, rem = divmod(seconds, 3600)
+    minutes, seconds = divmod(rem, 60)
+    return {"uptime": f"{hours}h {minutes}m {seconds}s"}
 
-@router.get("/version")
-def get_version():
-    """Returns the current HivemindOS version."""
-    return {"version": __version__}
+@router.get("/status", tags=["System"])
+def system_status():
+    """
+    Returns current app metadata and environment status.
+    """
+    return {
+        "app": "HivemindOS",
+        "version": __version__,
+        "environment": os.getenv("ENVIRONMENT", "development"),
+        "uptime_seconds": get_uptime_seconds()
+    }
