@@ -15,6 +15,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.api.routes import system
 from shared.meta.version import __version__
+# 🧩 Agent Routes
+from backend.api.routes import daphne_routes, bart_routes, cortexa_routes
+
 
 # Detect runtime environment (default: development)
 env = os.getenv("ENVIRONMENT", "development").upper()
@@ -38,3 +41,7 @@ app.add_middleware(
 
 # Register routers
 app.include_router(system.router)
+# 🧩 Agent Routes
+app.include_router(daphne_routes.router)
+app.include_router(bart_routes.router)
+app.include_router(cortexa_routes.router)
