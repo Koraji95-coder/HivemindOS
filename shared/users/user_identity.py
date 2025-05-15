@@ -10,7 +10,7 @@ class UserIdentity:
         # Maps lowercase usernames to access roles
         self.roles = {
             "dusti": "admin",
-            "lumina": "system",
+            "atlas": "system",
             "guest": "guest"
         }
 
