@@ -1,3 +1,12 @@
+"""
+daphne_routes.py 🤖
+--------------------
+FastAPI router exposing endpoints for the DaphneAgent.
+
+Routes:
+    - /api/daphne/ask: Accepts user input and returns Daphne's response.
+"""
+
 from fastapi import APIRouter
 from pydantic import BaseModel
 from shared.agents.daphne_agent import DaphneAgent
