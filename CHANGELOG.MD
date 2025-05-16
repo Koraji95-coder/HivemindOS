@@ -1,3 +1,39 @@
+## 🚀 v0.2.0 – v0.2.0 Vue Integration  Overhaul
+
+### 🆕 New Files
+- (None)
+
+### 🔧 Modified Files
+- CHANGELOG.MD
+- logs/hivemind.log
+- shared/meta/__pycache__/version.cpython-313.pyc
+
+---
+## 🚀 v0.2.0 – "🌐 v0.2.0 – Vue Migration Kickoff
+
+### 🆕 New Files
+- hivemind-ui/index.html
+- hivemind-ui/package.json
+- hivemind-ui/src/App.vue
+- hivemind-ui/src/assets/styles.css
+- hivemind-ui/src/components/AgentPanel.vue
+- hivemind-ui/src/main.js
+- hivemind-ui/vite.config.js
+
+### 🔧 Modified Files
+- frontend/__init__.py
+- frontend/app.js
+- frontend/components/AtlasControl.js
+- frontend/components/MemoryViewer.js
+- frontend/components/MoodRing.js
+- frontend/components/__init__.py
+- frontend/index.html
+- frontend/styles.css
+- logs/hivemind.log
+- shared/meta/__pycache__/version.cpython-313.pyc
+- shared/meta/version.py
+
+---
 ## 🚀 v0.1.9 – Frontend Chain Execution Panel
 
 ### 🆕 New Files
@@ -77,3 +113,13 @@
 - tests/__pycache__/test_agents.cpython-313-pytest-8.3.5.pyc
 
 ---
+
+## [0.2.0] - Vue Migration Kickoff
+
+### ✨ Added
+- 🧠 `hivemind-ui/` as standalone Vue UI project
+- 🧩 Component-based system layout (AgentPanel.vue scaffolded)
+- 🌐 Vite config, App.vue, main.js, and scoped `styles.css`
+
+### 🔥 Deprecated
+- ❌ Removed `frontend/` directory and legacy `index.html`
