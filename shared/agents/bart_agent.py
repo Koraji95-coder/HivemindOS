@@ -39,9 +39,18 @@ class BartAgent(AgentBase):
         4. 🧠 Wrap the GPT prompt accordingly.
         5. 🤖 Query GPTClient for structured financial insight.
         """
+        if "last plugin" in prompt.lower() or "last result" in prompt.lower():
+            last = session.get_memory().get("last_plugin_used")
+            if last:
+                return (
+                    f"📊 Last plugin used: {last.get('plugin')}\n"
+                    f"📥 Input: {last.get('input')}\n"
+                    f"📥Output: {last.get('output')}\n"
+                )
+            return "📉 No plugin result found in memory."
+        
         if not self.atlas.is_safe():  # 🔐 Atlas Control System
             return f"{self.name}: ⚠️ System is in safe mode. Operation blocked."
-
         try:
             mood = detect_mood(prompt)  # 🎭 Identify emotional state
             set_user_mood(self.username, mood)  # 💾 Save user mood
