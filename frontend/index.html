@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HivemindOS UI</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>🧠 HivemindOS</h1>
+    <nav>
+      <button data-tab="daphne">Daphne</button>
+      <button data-tab="bart">Bart</button>
+      <button data-tab="cortexa">Cortexa</button>
+      <button data-tab="atlas">System</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="daphne" class="tab active">
+      <h2>Daphne 💬</h2>
+      <div class="output" id="daphne-output">Welcome.</div>
+      <input placeholder="Say something..." id="daphne-input" />
+      <button onclick="sendPrompt('daphne')">Send</button>
+    </section>
+
+    <section id="bart" class="tab">
+      <h2>Bart 📊</h2>
+      <div class="output" id="bart-output">Awaiting market insight...</div>
+      <input placeholder="Ask Bart..." id="bart-input" />
+      <button onclick="sendPrompt('bart')">Send</button>
+    </section>
+
+    <section id="cortexa" class="tab">
+      <h2>Cortexa 🧬</h2>
+      <div class="output" id="cortexa-output">Ready for analysis.</div>
+      <input placeholder="Ask Cortexa..." id="cortexa-input" />
+      <button onclick="sendPrompt('cortexa')">Send</button>
+    </section>
+
+    <section id="atlas" class="tab">
+      <h2>Atlas 🛡️</h2>
+      <pre id="atlas-output">Loading system state...</pre>
+      <button onclick="loadAtlas()">Refresh State</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
