@@ -7,16 +7,19 @@ global state, and can override agents when needed.
 
 Serves as the final fallback brain and strategic monitor.
 """
-from shared.state.session_manager import session
+from shared.state import session_manager
+
+
 
 
 class Atlas:
     def __init__(self):
         # Internal identity metadata
         self.name = "Atlas"
-        self.version = "v0.0.8"
+        self.version = "v0.0.9"
         self.system_mode = "development"  # could be production/test/maintenance
         self.safe_guard = True  # critical runtime control flag
+        session = session_manager.session
         session.get_user_name()
         session.get_context()
 

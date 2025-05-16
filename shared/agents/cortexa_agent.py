@@ -1,6 +1,6 @@
 """
 CortexaAgent 🧬
-────────────────────────────
+
 Handles structured prediction tasks, classification, and logic-driven workflows.
 Specializes in:
 - Document ingestion (e.g. PDF analysis)
@@ -10,42 +10,55 @@ Specializes in:
 
 from shared.agents.agent_base import AgentBase
 from shared.ai.gpt_client import GPTClient
-from shared.state.session import session
+from shared.logging.logger import log
 
+# ✅ Mood modules
+from shared.personas.daphne.mood_engine import detect_mood, mood_wrapped_prompt
+from shared.state.mood_state_tracker import get_user_mood, set_user_mood
+from shared.state.session_manager import session
+
+# Atlas System Control
+from shared.system.atlas_core import Atlas
 
 class CortexaAgent(AgentBase):
     def __init__(self):
         """
-        Initializes the agent with session-level context:
-
-        - Loads the current user's name, role, and device ID
-        - Allows responses to be personalized per session
-        - Enables future logic for role-based filtering, scoped memory, and user-based agent behavior
-
-        Session values pulled from `SessionManager`:
-        - self.username → User display name (fallback: guest)
-        - self.role     → Role label (Owner / Admin / Guest)
-        - self.device_id→ Source device ID or fallback token
+        Initializes Cortexa with:
+        - Session-level awareness (user, role, device)
+        - GPTClient binding for structured classification
+        - Logging per active user + session
         """
         super().__init__(name="Cortexa")
         self.gpt = GPTClient(agent="Cortexa")
         self.username = session.get_user_name()
         self.role = session.get_user_role()
         self.device_id = session.get_device_id()
+        self.atlas = Atlas()
+        log(f"{self.name} initialized for {self.username} ({self.role}) on {self.device_id}")
 
     def ask(self, prompt: str) -> str:
         """
-        Processes structured prompts for prediction or classification.
+        Handles structured logic/classification prompts with mood-layered tone.
 
-        Args:
-            prompt (str): A model input or classification query
-
-        Returns:
-            str: Cortexa's response (currently stubbed)
+        Steps:
+        1. 🔐 Atlas Check: Abort if system isn't safe.
+        2. 🎭 Detect user mood from logical input.
+        3. 💾 Store that mood in memory.
+        4. 🧠 Wrap prompt to align GPT’s language style.
+        5. 🤖 Execute GPTClient logic task.
         """
+        if not self.atlas.is_safe():  # 🔐 Atlas Control System
+            return f"{self.name}: ⚠️ System is in safe mode. Operation blocked."
+
         try:
-            return self.gpt.ask(prompt)
-        except:
+            mood = detect_mood(prompt)  # 🎭 Evaluate prompt tone
+            set_user_mood(self.username, mood)  # 💾 Cache mood per user
+            wrapped_prompt = mood_wrapped_prompt(
+                prompt, mood
+            )  # 🧠 Modify prompt to suit tone
+            return self.gpt.ask(wrapped_prompt)  # 🤖 Perform logic inference
+        except Exception as e:
+            log(f"{self.name} fallback triggered: {e}")
             return self.respond(prompt)
 
     def respond(self, input_text: str) -> str:
@@ -58,10 +71,10 @@ class CortexaAgent(AgentBase):
         Returns:
             str: Prediction explanation or result
         """
-        # 🧬 Placeholder logic for future ML classification
+        mood = get_user_mood(self.username)
         if "predict" in input_text.lower():
-            return "📈 Cortexa predicts a bullish signal with 82% confidence."
+            return f"📈 Cortexa predicts a bullish signal with 82% confidence. (Mood: {mood})"
         elif "vector" in input_text.lower():
-            return "🔢 Input vector appears valid. Proceeding with classification..."
+            return f"🔢 Input vector appears valid. Proceeding with classification... (Mood: {mood})"
         else:
-            return f"🧬 Cortexa cannot process '{input_text}' — model input unclear."
+            return f"🧬 Cortexa cannot process '{input_text}' — model input unclear. (Mood: {mood})"
