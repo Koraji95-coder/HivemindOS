@@ -1,23 +1,28 @@
 """
 CortexaAgent 🧬
+────────────────────────────────────────
+Handles structured prediction tasks, plugin execution, classification,
+and mood-adjusted logic workflows.
 
-Handles structured prediction tasks, classification, and logic-driven workflows.
-Specializes in:
-- Document ingestion (e.g. PDF analysis)
-- Sector prediction
-- Confidence scoring
+Specialties:
+- Document classification
+- Plugin execution (math, validation)
+- Mood-aware GPT prompting
+- System safety enforcement (Atlas)
 """
 
+import re
 from shared.agents.agent_base import AgentBase
 from shared.ai.gpt_client import GPTClient
 from shared.logging.logger import log
+from shared.workflows.plugin_executor import execute_plugin
 
 # ✅ Mood modules
 from shared.personas.daphne.mood_engine import detect_mood, mood_wrapped_prompt
 from shared.state.mood_state_tracker import get_user_mood, set_user_mood
 from shared.state.session_manager import session
 
-# Atlas System Control
+# 🛡️ Atlas System Control
 from shared.system.atlas_core import Atlas
 
 class CortexaAgent(AgentBase):
@@ -26,7 +31,8 @@ class CortexaAgent(AgentBase):
         Initializes Cortexa with:
         - Session-level awareness (user, role, device)
         - GPTClient binding for structured classification
-        - Logging per active user + session
+        - Plugin detection capability
+        - Mood detection + safe prompting
         """
         super().__init__(name="Cortexa")
         self.gpt = GPTClient(agent="Cortexa")
@@ -34,42 +40,76 @@ class CortexaAgent(AgentBase):
         self.role = session.get_user_role()
         self.device_id = session.get_device_id()
         self.atlas = Atlas()
+
         log(f"{self.name} initialized for {self.username} ({self.role}) on {self.device_id}")
 
     def ask(self, prompt: str) -> str:
         """
-        Handles structured logic/classification prompts with mood-layered tone.
+        Main entrypoint for structured logic, mood-awareness and plugin execution.
 
         Steps:
-        1. 🔐 Atlas Check: Abort if system isn't safe.
-        2. 🎭 Detect user mood from logical input.
-        3. 💾 Store that mood in memory.
-        4. 🧠 Wrap prompt to align GPT’s language style.
-        5. 🤖 Execute GPTClient logic task.
+        1. 🔐 Atlas Control: Abort if system is unsafe.
+        2. 🔌 Plugin match: If matched, execute and return plugin result.
+        3. 🎭 Mood detection: Analyze mood from input.
+        4. 🧠 Wrap prompt with tone-adjusted language.
+        5. 🤖 Send to GPT.
         """
-        if not self.atlas.is_safe():  # 🔐 Atlas Control System
+        if not self.atlas.is_safe():
             return f"{self.name}: ⚠️ System is in safe mode. Operation blocked."
 
+        # 🔌 Detect plugin call
+        plugin_match = self._detect_plugin_trigger(prompt)
+        if plugin_match:
+            plugin_name, plugin_input = plugin_match
+            result = execute_plugin(plugin_name, plugin_input)
+
+            # 💾 Store plugin call in session memory
+            session.get_memory()["last_plugin_used"] = result
+
+            return (
+                f"🧠 Cortexa plugin output:\n"
+                f"🔌 `{plugin_name}` → `{plugin_input}`\n"
+                f"📥 Result: `{result.get('output')}`"
+            )
+
         try:
-            mood = detect_mood(prompt)  # 🎭 Evaluate prompt tone
-            set_user_mood(self.username, mood)  # 💾 Cache mood per user
-            wrapped_prompt = mood_wrapped_prompt(
-                prompt, mood
-            )  # 🧠 Modify prompt to suit tone
-            return self.gpt.ask(wrapped_prompt)  # 🤖 Perform logic inference
+            mood = detect_mood(prompt)
+            set_user_mood(self.username, mood)
+            wrapped_prompt = mood_wrapped_prompt(prompt, mood)
+            return self.gpt.ask(wrapped_prompt)
         except Exception as e:
             log(f"{self.name} fallback triggered: {e}")
             return self.respond(prompt)
 
-    def respond(self, input_text: str) -> str:
+    def _detect_plugin_trigger(self, prompt: str):
         """
-        Handles model-related reasoning or analysis tasks.
-
-        Args:
-            input_text (str): Structured model task input
+        Detects if a plugin should be invoked based on user input patterns.
 
         Returns:
-            str: Prediction explanation or result
+            (plugin_name, plugin_input) or None
+        """
+        match1 = re.match(r"(?:run|execute)?\s*plugin\s+(\w+)\s+on\s+(.+)", prompt, re.IGNORECASE)
+        match2 = re.match(r"calculate\s+(.+)", prompt, re.IGNORECASE)
+        match3 = re.match(r"use\s+(\w+)\s+to\s+(.+)", prompt, re.IGNORECASE)
+
+        if match1:
+            return match1.group(1), match1.group(2)
+        elif match2:
+            return "calculator", match2.group(1)
+        elif match3:
+            return match3.group(1), match3.group(2)
+
+        return None
+
+    def respond(self, input_text: str) -> str:
+        """
+        Fallback reasoning or model logic response (non-GPT, mood-aware).
+
+        Args:
+            input_text (str): structured input or user message
+
+        Returns:
+            str: Cortexa’s formatted fallback output
         """
         mood = get_user_mood(self.username)
         if "predict" in input_text.lower():
