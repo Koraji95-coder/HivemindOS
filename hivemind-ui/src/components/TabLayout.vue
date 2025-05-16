@@ -22,7 +22,7 @@
     </main>
 
     <footer>
-      <small>HivemindOS UI © 2025 — v0.2.0</small>
+      <small>HivemindOS UI © 2025 — <span id="version-tag">loading...</span></small>
     </footer>
   </div>
 </template>

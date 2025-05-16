@@ -1,3 +1,26 @@
+## 🚀 v0.2.2 – Panel Injection & Chain UI, Version_bump commands all versions and keeps it consistent. (2025-05-16)
+
+### 🆕 New Files
+- .vscode/tasks.json
+- backend/__pycache__/fastapi_main.cpython-313.pyc
+- hivemind-ui/src/version.js
+- start_backend.bat
+
+### 🔧 Modified Files
+- warning: in the working copy of 'hivemind-ui/node_modules/.vite/deps/_metadata.json', LF will be replaced by CRLF the next time Git touches it
+- warning: in the working copy of 'hivemind-ui/node_modules/.vite/deps/package.json', LF will be replaced by CRLF the next time Git touches it
+- warning: in the working copy of 'hivemind-ui/node_modules/.vite/deps/vue.js', LF will be replaced by CRLF the next time Git touches it
+- warning: in the working copy of 'hivemind-ui/node_modules/.vite/deps/vue.js.map', LF will be replaced by CRLF the next time Git touches it
+- hivemind-ui/node_modules/.vite/deps/_metadata.json
+- hivemind-ui/src/App.vue
+- hivemind-ui/src/components/ChainPanel.vue
+- hivemind-ui/src/components/TabLayout.vue
+- logs/hivemind.log
+- shared/meta/__pycache__/version.cpython-313.pyc
+- shared/meta/version.py
+- tools/version_bump.py
+
+---
 ## 🚀 v0.2.0 – v0.2.0 Vue Integration  Overhaul
 
 ### 🆕 New Files

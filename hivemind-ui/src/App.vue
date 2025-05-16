@@ -2,7 +2,7 @@
   <div>
     <!-- 🧠 App Header -->
     <header>
-      <h1>🧠 HivemindOS v0.2.0</h1>
+      <h1>🧠 HivemindOS {{ version }}</h1>
       <!-- 🧭 Navigation Buttons -->
       <nav>
         <button
@@ -56,8 +56,9 @@
 
     <!-- 🦶 Footer -->
     <footer>
-      <small>HivemindOS UI &copy; 2025 – <span id="version-tag">v0.2.0</span></small>
-    </footer>
+  <small>HivemindOS UI © 2025 — {{ version }}</small>
+</footer>
+
   </div>
 </template>
 
@@ -81,6 +82,7 @@ export default {
 
       // 📋 List of agents
       tabs: ["bart", "daphne", "cortexa", "atlas", "chain"],
+      version: "v?.?",
     };
   },
   methods: {
@@ -88,6 +90,17 @@ export default {
     capitalize(name) {
       return name.charAt(0).toUpperCase() + name.slice(1);
     },
+  },
+mounted() {
+    // ✅ Fetch version from backend as soon as app starts
+    fetch("/api/atlas")
+      .then((res) => res.json())
+      .then((data) => {
+        this.version = data.version || "v?.?";
+      })
+      .catch(() => {
+        this.version = "unknown";
+      });
   },
 };
 </script>
