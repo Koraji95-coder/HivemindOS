@@ -43,3 +43,10 @@ document.querySelector("[data-tab='atlas']").addEventListener("click", () => {
   renderAtlasControls("atlas-controls");
 });
 
+fetch("/api/atlas")
+  .then(res => res.json())
+  .then(data => {
+    const el = document.getElementById("version-tag");
+    if (el) el.textContent = data.version || "unknown";
+  });
+

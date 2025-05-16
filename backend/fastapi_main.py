@@ -7,6 +7,8 @@ Entry point for HivemindOS FastAPI web server.
 - Enables CORS for frontend integration
 - Auto-generates OpenAPI docs at /docs
 """
+from shared.meta.version import __version__
+app = FastAPI(title="HivemindOS API", version=__version__)
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
