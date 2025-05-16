@@ -67,13 +67,14 @@ section {
 input,
 textarea {
   width: 100%;
-  padding: 0.5rem;
+  height: 6rem;
   background: #222;
   color: white;
-  border: 1px solid #444;
-  border-radius: 4px;
-  margin-bottom: 0.5rem;
+  border: 1px solid #555;
+  padding: 0.5rem;
+  resize: vertical;
 }
+
 
 button {
   background: #009688;
@@ -105,3 +106,4 @@ button:hover {
   50% { opacity: 1; }
   100% { opacity: 0; }
 }
+

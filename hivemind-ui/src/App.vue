@@ -38,6 +38,20 @@
         route="cortexa"
         emoji="🧬"
       />
+
+      <AgentPanel
+        v-if="current === 'atlas'"
+        name="Atlas"
+        route="atlas"
+        emoji="🛡️"
+      />
+
+      <AgentPanel
+        v-if="current === 'chain'"
+        name="Chain"
+        route="chain"
+        emoji="🔗"
+      />
     </main>
 
     <!-- 🦶 Footer -->
@@ -50,11 +64,15 @@
 <script>
 // 🧩 Import the reusable agent component
 import AgentPanel from "./components/AgentPanel.vue";
+import AtlasPanel from "./components/AtlasPanel.vue";
+import ChainPanel from "./components/ChainPanel.vue";    
 
 export default {
   name: "App",
   components: {
     AgentPanel,
+    AtlasPanel,
+    ChainPanel,
   },
   data() {
     return {
@@ -62,7 +80,7 @@ export default {
       current: "bart",
 
       // 📋 List of agents
-      tabs: ["bart", "daphne", "cortexa"],
+      tabs: ["bart", "daphne", "cortexa", "atlas", "chain"],
     };
   },
   methods: {
