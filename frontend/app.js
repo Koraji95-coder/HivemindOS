@@ -31,3 +31,15 @@ async function loadAtlas() {
   const data = await res.json();
   pre.textContent = JSON.stringify(data, null, 2);
 }
+
+import { renderMoodRing } from './components/MoodRing.js';
+import { renderMemory } from './components/MemoryViewer.js';
+import { renderAtlasControls } from './components/AtlasControl.js';
+
+// 🛡️ Mount diagnostics UI when Atlas tab is clicked
+document.querySelector("[data-tab='atlas']").addEventListener("click", () => {
+  renderMoodRing("mood-ring");
+  renderMemory("memory-viewer");
+  renderAtlasControls("atlas-controls");
+});
+

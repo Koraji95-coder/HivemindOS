@@ -39,12 +39,21 @@
     </section>
 
     <section id="atlas" class="tab">
-      <h2>Atlas 🛡️</h2>
-      <pre id="atlas-output">Loading system state...</pre>
-      <button onclick="loadAtlas()">Refresh State</button>
-    </section>
+  <h2>Atlas 🛡️</h2>
+  <pre id="atlas-output">System state will appear here.</pre>
+  <button onclick="loadAtlas()">Refresh Core Snapshot</button>
+
+  <hr />
+
+  <div id="mood-ring">[Mood ring]</div>
+  <hr />
+  <pre id="memory-viewer">[Memory]</pre>
+  <hr />
+  <div id="atlas-controls">[Control Panel]</div>
+</section>
+
   </main>
 
-  <script src="app.js"></script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

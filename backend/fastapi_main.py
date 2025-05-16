@@ -12,6 +12,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.routers import daphne_router, bart_router, cortexa_router, atlas_router
+from backend.routers import chain_router
 
 app = FastAPI(title="HivemindOS API 🧠", version="0.1.0")
 
@@ -28,3 +29,4 @@ app.include_router(daphne_router.router, prefix="/api/daphne")
 app.include_router(bart_router.router, prefix="/api/bart")
 app.include_router(cortexa_router.router, prefix="/api/cortexa")
 app.include_router(atlas_router.router, prefix="/api/atlas")
+app.include_router(chain_router.router, prefix="/api/chain")
