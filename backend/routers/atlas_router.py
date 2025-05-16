@@ -1,23 +1,30 @@
 """
 atlas_router.py 🛡️
 ────────────────────────────────────────
-Handles system state summary via Atlas core logic.
+Handles system state reporting and mode control.
 
-Route: /api/atlas (GET)
-Returns: full session + system state
+Routes:
+- GET /api/atlas → returns session, flags, version, mode
+- POST /api/atlas/mode → sets runtime mode
 """
 
 from fastapi import APIRouter
 from fastapi import Request
 from shared.system.atlas_core import Atlas
+from shared.meta.version import __version__
+from shared.state.session_manager import session
 
 router = APIRouter()
 atlas = Atlas()
 
 @router.get("")
 async def get_state():
-    # 🔍 Returns state from Atlas (session user, flags, mode, etc.)
-    return atlas.summarize_state()
+    return {
+        "mode": atlas.system_mode,
+        "flags": session.get_context(),
+        "user": session.get_user_profile(),
+        "version": __version__  # ✅ Injected version here
+    }
 
 @router.post("/mode")
 async def set_mode(request: Request):

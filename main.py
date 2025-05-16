@@ -15,10 +15,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.api.routes import system
 from shared.meta.version import __version__
+from shared.users.user_profile_service import load_user_profile
+from shared.state.session_manager import session
 # 🧩 Agent Routes
 from backend.api.routes import daphne_routes, bart_routes, cortexa_routes
 
-
+#Profile Set
+session.set_user_profile(load_user_profile("Dusti"))
 # Detect runtime environment (default: development)
 env = os.getenv("ENVIRONMENT", "development").upper()
 print(f"🧠 HivemindOS v{__version__} booted in {env} mode")

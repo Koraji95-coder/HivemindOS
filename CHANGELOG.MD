@@ -1,43 +1,79 @@
-# 📦 CHANGELOG
+## 🚀 v0.1.9 – Frontend Chain Execution Panel
 
-## v0.0.1 — Bootstrap & Core Setup
+### 🆕 New Files
+- __init__.py
+- __pycache__/__init__.cpython-313.pyc
+- backend/__init__.py
+- backend/__pycache__/__init__.cpython-313.pyc
+- backend/api/__init__.py
+- backend/api/__pycache__/__init__.cpython-313.pyc
+- backend/api/routes/__init__.py
+- backend/api/routes/__pycache__/__init__.cpython-313.pyc
+- backend/models/__init__.py
+- backend/models/agent_chain_model.py
+- backend/models/chain_model.py
+- backend/routers/__init__.py
+- frontend/__init__.py
+- frontend/components/__init__.py
+- logs/hivemind.log
+- shared/__init__.py
+- shared/__pycache__/__init__.cpython-313.pyc
+- shared/ai/__init__.py
+- shared/ai/__pycache__/__init__.cpython-313.pyc
+- shared/config/__init__.py
+- shared/config/__pycache__/__init__.cpython-313.pyc
+- shared/io/__init__.py
+- shared/logging/__init__.py
+- shared/logging/__pycache__/__init__.cpython-313.pyc
+- shared/logging/__pycache__/logger.cpython-313.pyc
+- shared/memory/__init__.py
+- shared/meta/__init__.py
+- shared/meta/__pycache__/__init__.cpython-313.pyc
+- shared/personas/__init__.py
+- shared/personas/__pycache__/__init__.cpython-313.pyc
+- shared/personas/daphne/__init__.py
+- shared/personas/daphne/__pycache__/__init__.cpython-313.pyc
+- shared/personas/daphne/__pycache__/mood_engine.cpython-313.pyc
+- shared/plugins/__init__.py
+- shared/plugins/json_validator.py
+- shared/state/__init__.py
+- shared/state/__pycache__/__init__.cpython-313.pyc
+- shared/state/__pycache__/mood_state_tracker.cpython-313.pyc
+- shared/state/__pycache__/session.cpython-313.pyc
+- shared/state/__pycache__/session_manager.cpython-313.pyc
+- shared/system/__init__.py
+- shared/system/__pycache__/__init__.cpython-313.pyc
+- shared/system/__pycache__/atlas_core.cpython-313.pyc
+- shared/users/__init__.py
+- shared/users/__pycache__/__init__.cpython-313.pyc
+- shared/users/__pycache__/user_identity.cpython-313.pyc
+- shared/users/__pycache__/user_profile_service.cpython-313.pyc
+- shared/workflows/__init__.py
+- shared/workflows/__pycache__/__init__.cpython-313.pyc
+- shared/workflows/__pycache__/plugin_executor.cpython-313.pyc
+- shared/workflows/agent_chain_executor.py
+- tests/__init__.py
+- tests/__pycache__/__init__.cpython-313.pyc
+- tests/__pycache__/test_session.cpython-313-pytest-8.3.5.pyc
+- tests/__pycache__/test_users.cpython-313-pytest-8.3.5.pyc
+- tests/test_session.py
+- tests/test_users.py
+- tools/__init__.py
+- tools/generate__inits__.py
+- tools/version_bump.py
 
-✅ Initial scaffolding of HivemindOS backend architecture
+### 🔧 Modified Files
+- CHANGELOG.MD
+- __pycache__/main.cpython-313.pyc
+- backend/fastapi_main.py
+- backend/routers/atlas_router.py
+- backend/routers/chain_router.py
+- main.py
+- shared/agents/__pycache__/bart_agent.cpython-313.pyc
+- shared/agents/__pycache__/cortexa_agent.cpython-313.pyc
+- shared/agents/__pycache__/daphne_agent.cpython-313.pyc
+- shared/meta/__pycache__/version.cpython-313.pyc
+- shared/meta/version.py
+- tests/__pycache__/test_agents.cpython-313-pytest-8.3.5.pyc
 
-### ✨ Highlights
-- `main.py` with FastAPI app + CORS
-- `/health`, `/uptime`, `/version` system endpoints
-- `.env` file loader with test/dev detection
-- VS Code settings: black, isort, pytest
-- Directory structure: backend/, shared/, tests/, tools/
-- Logger + basic system bootstrap printing
-
-## [v0.0.2] - Agent Core Integration
-- Added `AgentBase` foundation for multi-agent architecture.
-- Introduced `GPTClient` with test-mode fallback.
-- Integrated `DaphneAgent`, `BartAgent`, `CortexaAgent`.
-- Built basic `tests/test_agents.py` with output assertions.
-- Implemented terminal output tagging for agent roles.
-
-## [v0.0.3] - Route Layer Injection
-- Added `/api/daphne/ask`, `/api/bart/ask`, `/api/cortexa/ask` endpoints
-- Registered all route files in `main.py`
-- Added `test_daphne_routes.py` using FastAPI's test client
-- Enabled agent interaction over API
-
-## [v0.0.4] - Router Activation + I/O Integration
-
-### Added
-- Daphne, Bart, and Cortexa agent routes
-- POST-based `/ask` endpoints for each agent
-- output_router with ui_output() for CLI/GUI print bridging
-- First route-based test: `test_daphne_routes.py`
-
-## [v0.0.5] - Output Router + Agent API Routes
-- Added `shared.io.output_router` for CLI/GUI output redirection
-- Added FastAPI route modules:
-  - `daphne_routes.py`
-  - `bart_routes.py`
-  - `cortexa_routes.py`
-- Each route provides a basic POST endpoint stubbed for future expansion
-- Added route test scaffold: `test_routes/test_daphne_routes.py`
+---
