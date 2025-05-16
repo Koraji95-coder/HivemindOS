@@ -1,3 +1,14 @@
+## 🚀 v0.2.1 – 🔁 v0.2.1 – Initial Vue app launchpad ready: tabs, panels, and scoped layout refactor.
+
+### 🆕 New Files
+- (None)
+
+### 🔧 Modified Files
+- logs/hivemind.log
+- shared/meta/__pycache__/version.cpython-313.pyc
+- shared/meta/version.py
+
+---
 ## 🚀 v0.3.0 – 🔁 v0.2.1 – Initial Vue app launchpad ready: tabs, panels, and scoped layout refactor.
 
 ### 🆕 New Files
