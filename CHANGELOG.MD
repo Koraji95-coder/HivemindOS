@@ -1,3 +1,22 @@
+## 🚀 v0.2.4 – 🚀 v0.2.4 – Injected toast notifications, session tracking, and finalized modular agent panel structure (2025-05-16)
+
+### 🆕 New Files
+- hivemind-ui/src/views/HomePanel.vue
+
+### 🔧 Modified Files
+- .vscode/tasks.json
+- hivemind-ui/src/App.vue
+- hivemind-ui/src/layouts/TabLayout.vue
+- hivemind-ui/src/main.js
+- hivemind-ui/src/version.js
+- hivemind-ui/src/views/AtlasPanel.vue
+- hivemind-ui/src/views/BartPanel.vue
+- hivemind-ui/src/views/ChainPanel.vue
+- hivemind-ui/src/views/CortexaPanel.vue
+- hivemind-ui/src/views/DaphnePanel.vue
+- shared/meta/version.py
+
+---
 ## 🚀 v0.2.3 – Agent Panel Refactor – Split into Bart/Daphne/Cortexa panels + added Generic fallback for resilience (2025-05-16)
 
 ### 🆕 New Files

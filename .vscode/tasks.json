@@ -1,31 +1,26 @@
 {
-  "version": "2.0.0",  // VS Code task format version, DO NOT TOUCH
-  "_hivemind_version": "v0.2.2",
+  "version": "2.0.0",
+  "hivemind_version": "v0.2.4",  // 🔄 DO NOT REMOVE – gets auto-updated by version_bump.py
   "tasks": [
     {
       "label": "Run Backend (FastAPI)",
       "type": "shell",
-      "command": "python",
-      "args": [
-        "-m", "uvicorn", "backend.fastapi_main:app", "--reload"
-      ],
+      "command": "uvicorn backend.fastapi_main:app --reload",
       "group": "build",
       "problemMatcher": [],
-      "detail": "Launches FastAPI backend server"
+      "detail": "Launches FastAPI backend server [v0.2.3]"
     },
     {
       "label": "Run UI (Vue Dev Server)",
       "type": "shell",
       "command": "cmd",
-      "args": [
-        "/c", "npm run dev"
-      ],
+      "args": ["/c", "npm run dev"],
       "options": {
         "cwd": "hivemind-ui"
       },
       "group": "build",
       "problemMatcher": [],
-      "detail": "Launches Vite UI from hivemind-ui/"
+      "detail": "Launches Vite UI from hivemind-ui/ [v0.2.3]"
     }
   ]
 }

@@ -20,8 +20,9 @@
     <!-- 🌐 Base input shared by chain -->
     <textarea v-model="baseInput" placeholder="Shared input (optional)"></textarea>
 
-    <!-- 🚀 Run agent chain -->
-    <button @click="runChain">▶️ Run Chain</button>
+    <!-- 🧠 User Input Run Agent Chain-->
+    <textarea v-model="input" placeholder="Run a chain..."></textarea>
+    <button @click="runChain">▶️ Execute</button>
 
     <!-- 📤 Output display -->
     <pre class="output">{{ output }}</pre>
@@ -29,46 +30,46 @@
 </template>
 
 <script>
+import { useToast } from "vue-toastification";
+const toast = useToast();
+toast.success("🚀 It Works!");
+
 export default {
   name: "ChainPanel",
   data() {
-    return {
-      baseInput: "", // 👥 Shared initial input
-      chain: [
-        { agent: "", prompt: "" }, // 🧠 Each step: agent + their specific prompt
-      ],
-      output: "",
+     return {
+      input: "",       // 🧠 User prompt
+      output: "",      // 📥 Backend response
+      toast: null,     // 🔔 Toast ref
     };
   },
+  mounted() {
+    this.toast = useToast();  // 🔌 Initialize toast on mount
+  },
   methods: {
-    // ➕ Add another agent-prompt step
-    addStep() {
-      this.chain.push({ agent: "", prompt: "" });
-    },
-
-    // 🔁 Run the full chain
     async runChain() {
-      this.output = "⏳ Running agent chain...";
+      this.output = "⏳ Running chain...";
+
       try {
-        const response = await fetch("/api/chain/run", {
+        const res = await fetch("/api/chain/run", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            input: this.baseInput,
-            chain: this.chain,
-          }),
+          body: JSON.stringify({ prompt: this.input }),
         });
 
-        const data = await response.json();
+        const data = await res.json();
         this.output = JSON.stringify(data, null, 2);
-      } catch (error) {
-        console.error("❌ Chain error:", error);
-        this.output = "⚠️ Chain execution failed.";
+        this.toast.success("✅ Chain executed successfully.");
+      } catch (err) {
+        this.output = "❌ Chain execution failed.";
+        this.toast.error("🚨 Failed to run chain.");
+        console.error(err);
       }
     },
   },
 };
 </script>
+
 
 <style scoped>
 .step {

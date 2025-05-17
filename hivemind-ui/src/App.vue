@@ -1,7 +1,3 @@
-<!-- ====================== -->
-<!-- 🧠 App.vue -->
-<!-- Core layout & routing -->
-<!-- ====================== -->
 <template>
   <div>
     <!-- 💡 Top Bar / Branding -->
@@ -9,13 +5,13 @@
       <h1>🧠 HivemindOS UI</h1>
     </header>
 
-    <!-- 🔁 Tab Manager Shell (tabs defined below) -->
+    <!-- 🔁 Tab Shell -->
     <TabLayout :tabs="tabs" :currentTab="currentTab" @update:currentTab="currentTab = $event">
-      <!-- 💬 Injects matching component for active tab -->
-      <component :is="currentView" />
+      <!-- 💬 Dynamic injection of active tab component -->
+      <component :is="currentView" @switch="currentTab = $event" />
     </TabLayout>
 
-    <!-- 📦 Version Tag -->
+    <!-- 📦 Version -->
     <footer>
       <small>HivemindOS v{{ version }}</small>
     </footer>
@@ -23,30 +19,34 @@
 </template>
 
 <script>
-import TabLayout from "./components/TabLayout.vue";
+import TabLayout from "./components/TabLayout.vue"; //Tab Shell
+import { version } from "./version.js";
 
-// 🧩 Agent Panels (modular)
-import AgentPanel from "./components/AgentPanel.vue";
-import AtlasPanel from "./components/AtlasPanel.vue";
-import ChainPanel from "./components/ChainPanel.vue";
-
-import { version } from "./version.js"; // 📦 Unified version file
+// Panels
+import HomePanel from "./views/HomePanel.vue"; //Home
+import BartPanel from "./views/BartPanel.vue";
+import DaphnePanel from "./views/DaphnePanel.vue";
+import CortexaPanel from "./views/CortexaPanel.vue";
+import AtlasPanel from "./views/AtlasPanel.vue";
+import ChainPanel from "./views/ChainPanel.vue"; // ✅ Moved from components/
 
 export default {
   name: "App",
   components: {
     TabLayout,
-    AgentPanel,
+    HomePanel,
+    BartPanel,
+    DaphnePanel,
+    CortexaPanel,
     AtlasPanel,
     ChainPanel,
   },
   data() {
     return {
-      currentTab: "bart", // 🧭 Default tab on load
-      version,            // 🔖 Pulled from version.js
-
-      // 🧠 Registered views: auto-renders in <component :is="..." />
+      currentTab: sessionStorage.getItem("active-tab") || "home", // 🔄 Restore if available
+      version,
       tabs: [
+        { name: "home", label: "Home", emoji: "🏠" },
         { name: "bart", label: "Bart", emoji: "📊" },
         { name: "daphne", label: "Daphne", emoji: "💬" },
         { name: "cortexa", label: "Cortexa", emoji: "🧬" },
@@ -57,14 +57,19 @@ export default {
   },
   computed: {
     currentView() {
-      switch (this.currentTab) {
-        case "bart": return "AgentPanel";
-        case "daphne": return "AgentPanel";
-        case "cortexa": return "AgentPanel";
-        case "atlas": return "AtlasPanel";
-        case "chain": return "ChainPanel";
-        default: return "AgentPanel";
-      }
+        return {
+            home: "HomePanel",
+            bart: "BartPanel",
+            daphne: "DaphnePanel",
+            cortexa: "CortexaPanel",
+            atlas: "AtlasPanel",
+            chain: "ChainPanel",
+        }[this.currentTab] || "GenericAgentPanel";
+    }
+  },
+  watch: {
+    currentTab(newTab) {
+      sessionStorage.setItem("active-tab", newTab); // 💾 Save tab
     },
   },
 };
