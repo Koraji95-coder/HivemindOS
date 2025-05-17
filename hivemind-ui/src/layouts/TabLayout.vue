@@ -1,7 +1,3 @@
-<!-- ====================== -->
-<!-- 🧱 TabLayout.vue -->
-<!-- Generic slot-based tab layout container -->
-<!-- ====================== -->
 <template>
   <main>
     <!-- 🧭 Tab Buttons -->
@@ -10,13 +6,14 @@
         v-for="tab in tabs"
         :key="tab.name"
         :class="{ 'active-tab': tab.name === currentTab }"
+        :aria-current="tab.name === currentTab ? 'page' : null"
         @click="$emit('update:currentTab', tab.name)"
       >
         <span>{{ tab.emoji }}</span> {{ tab.label }}
       </button>
     </nav>
 
-    <!-- 🎯 Active tab content (from parent <component>) -->
+    <!-- 🎯 Slot-based dynamic content -->
     <section class="tab-content">
       <slot />
     </section>
@@ -29,13 +26,13 @@ export default {
   props: {
     tabs: {
       type: Array,
-      required: true
+      required: true,
     },
     currentTab: {
       type: String,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 };
 </script>
 
@@ -54,20 +51,25 @@ nav {
 nav button {
   background: #222;
   color: #eee;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1.5rem; /* bigger buttons */
   border: none;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.2s ease; /* smooth hover effect */
+  font-size: 1rem;
 }
 
+/* Hover effect */
 nav button:hover {
   background-color: #333;
+  transform: scale(1.05); /* grows a little on hover */
 }
 
+/* The active tab (current panel) */
 nav button.active-tab {
-  background-color: #009688;
+  background-color: #00bfa5; /* nice teal green */
+  box-shadow: 0 0 8px rgba(0, 191, 165, 0.6); /* glow */
   font-weight: bold;
 }
 
@@ -79,5 +81,18 @@ nav button.active-tab {
   padding: 1rem;
   border-radius: 6px;
   border: 1px solid #333;
+}
+
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav button {
+    width: 90%;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+  }
 }
 </style>

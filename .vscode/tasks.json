@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "hivemind_version": "v0.2.4",  // 🔄 DO NOT REMOVE – gets auto-updated by version_bump.py
+  "hivemind_version": "v0.2.5",  // 🔄 DO NOT REMOVE – gets auto-updated by version_bump.py
   "tasks": [
     {
       "label": "Run Backend (FastAPI)",

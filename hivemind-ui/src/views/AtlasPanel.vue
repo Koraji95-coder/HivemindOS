@@ -12,28 +12,32 @@
 
 <script>
 import { useToast } from "vue-toastification";
-const toast = useToast();
-toast.success("🚀 It Works!");
+import { PanelSettings } from "@/config/panelSettings.js";
+
 
 export default {
   name: "AtlasPanel",
   props: ["name", "route", "emoji"],
   data() {
     return {
-      system: "Loading...",   // 📦 Output placeholder
-      toast: null,            // 🔔 Toast reference
+      system: "Loading...",
+      toast: null,
     };
   },
   mounted() {
-    this.toast = useToast();  // 🔌 Bind toast on mount
-    this.loadState();         // 🔄 Auto-run diagnostics
+    this.toast = useToast();
+
+    const config = panelSettings["atlas"];
+    if (config?.heartbeat) {
+      this.loadState();
+    }
   },
   methods: {
-    // 🌐 Load system diagnostics from /api/atlas
     async loadState() {
       this.system = "⏳ Loading...";
       try {
         const res = await fetch("/api/atlas");
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         this.system = JSON.stringify(data, null, 2);
         this.toast.success("✅ Atlas system loaded.");
@@ -48,5 +52,21 @@ export default {
 </script>
 
 <style scoped>
-/* 🎨 Optional: Add styling overrides if needed */
+button {
+  margin-bottom: 1rem;
+  background: #222;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+}
+pre {
+  background: #111;
+  color: #0f0;
+  padding: 1rem;
+  white-space: pre-wrap;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: 1px solid #333;
+}
 </style>

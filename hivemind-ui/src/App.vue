@@ -6,9 +6,13 @@
     </header>
 
     <!-- 🔁 Tab Shell -->
-    <TabLayout :tabs="tabs" :currentTab="currentTab" @update:currentTab="currentTab = $event">
-      <!-- 💬 Dynamic injection of active tab component -->
-      <component :is="currentView" @switch="currentTab = $event" />
+    <TabLayout 
+        :tabs="tabs"
+        :currentTab="currentTab"
+        @update:currentTab="currentTab = $event"
+    >
+        <!-- This changes what panel is shown when you click tabs -->
+        <component :is="currentView" />
     </TabLayout>
 
     <!-- 📦 Version -->
@@ -19,16 +23,16 @@
 </template>
 
 <script>
-import TabLayout from "./components/TabLayout.vue"; //Tab Shell
+import TabLayout from "@/layouts/TabLayout.vue";
 import { version } from "./version.js";
 
-// Panels
-import HomePanel from "./views/HomePanel.vue"; //Home
+import HomePanel from "./views/HomePanel.vue";
 import BartPanel from "./views/BartPanel.vue";
 import DaphnePanel from "./views/DaphnePanel.vue";
 import CortexaPanel from "./views/CortexaPanel.vue";
 import AtlasPanel from "./views/AtlasPanel.vue";
-import ChainPanel from "./views/ChainPanel.vue"; // ✅ Moved from components/
+import ChainPanel from "./views/ChainPanel.vue";
+import GenericAgentPanel from "./views/GenericAgentPanel.vue"; // ✅ Added fallback component
 
 export default {
   name: "App",
@@ -40,10 +44,11 @@ export default {
     CortexaPanel,
     AtlasPanel,
     ChainPanel,
+    GenericAgentPanel, // ✅ registered
   },
   data() {
     return {
-      currentTab: sessionStorage.getItem("active-tab") || "home", // 🔄 Restore if available
+      currentTab: sessionStorage.getItem("active-tab") || "home",
       version,
       tabs: [
         { name: "home", label: "Home", emoji: "🏠" },
@@ -55,21 +60,31 @@ export default {
       ],
     };
   },
+  mounted() {
+    const sessionId = sessionStorage.getItem("session-id");
+    if (!sessionId) {
+      const newId = crypto.randomUUID?.() || Math.random().toString(36).substring(2); // ✅ safer fallback
+      sessionStorage.setItem("session-id", newId);
+      console.log("🔐 New session:", newId);
+    } else {
+      console.log("🔁 Resumed session:", sessionId);
+    }
+  },
   computed: {
     currentView() {
-        return {
-            home: "HomePanel",
-            bart: "BartPanel",
-            daphne: "DaphnePanel",
-            cortexa: "CortexaPanel",
-            atlas: "AtlasPanel",
-            chain: "ChainPanel",
-        }[this.currentTab] || "GenericAgentPanel";
-    }
+      return {
+        home: "HomePanel",
+        bart: "BartPanel",
+        daphne: "DaphnePanel",
+        cortexa: "CortexaPanel",
+        atlas: "AtlasPanel",
+        chain: "ChainPanel",
+      }[this.currentTab] || "GenericAgentPanel"; // ✅ will now resolve properly
+    },
   },
   watch: {
     currentTab(newTab) {
-      sessionStorage.setItem("active-tab", newTab); // 💾 Save tab
+      sessionStorage.setItem("active-tab", newTab);
     },
   },
 };

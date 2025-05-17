@@ -1,11 +1,7 @@
-<!-- ====================== -->
-<!-- 🧠 BartPanel.vue -->
-<!-- ====================== -->
 <template>
   <section>
     <h2>{{ name }} {{ emoji }}</h2>
 
-    <!-- 🖥️ Output -->
     <div class="output">
       <span v-if="loading" class="typing">
         ⏳ Thinking<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span>
@@ -13,15 +9,12 @@
       <span v-else>{{ output }}</span>
     </div>
 
-    <!-- ✍ Input + Send -->
     <input :placeholder="`Ask ${name}...`" v-model="input" />
     <button @click="sendPrompt">Send</button>
 
-    <!-- 🧠 History Tools -->
     <button @click="showHistory = !showHistory">🧠 History</button>
     <button @click="clearHistory">🧼 Clear</button>
 
-    <!-- 📜 Past History -->
     <div v-if="showHistory" class="history">
       <ul>
         <li v-for="entry in history" :key="entry.timestamp">
@@ -36,8 +29,8 @@
 
 <script>
 import { useToast } from "vue-toastification";
-const toast = useToast();
-toast.success("🚀 It Works!");
+import { PanelSettings } from "@/config/panelSettings.js";
+
 
 export default {
   name: "BartPanel",
@@ -51,14 +44,31 @@ export default {
       loading: false,
       showHistory: false,
       history: [],
-      historyKey: "hivemind-history-bart",
       toast: null,
+      heartbeatInterval: null,
     };
+  },
+  computed: {
+    historyKey() {
+      return `hivemind-history-${this.route}`;
+    },
   },
   mounted() {
     this.toast = useToast();
+    this.toast.info(`${this.name} is online.`, { timeout: 2500 });
+
     this.loadLastSession();
-    this.toast.success("✅ BartPanel ready.");
+
+    const settings = panelSettings[this.route] || {};
+    if (settings.toasts) {
+      this.toast.success(`${this.name} ready.`);
+    }
+    if (settings.heartbeat) {
+      this.runHeartbeat();
+    }
+  },
+  beforeUnmount() {
+    clearInterval(this.heartbeatInterval);
   },
   methods: {
     async sendPrompt() {
@@ -72,21 +82,22 @@ export default {
           body: JSON.stringify({ prompt: this.input }),
         });
 
+        if (!res.ok) throw new Error(`Server error ${res.status}`);
         const data = await res.json();
+
         this.output = data.response || "⚠️ No response";
 
-        // 🧠 Store locally
         const log = {
           prompt: this.input,
           response: data.response,
           timestamp: new Date().toISOString(),
         };
+
         const stored = JSON.parse(sessionStorage.getItem(this.historyKey)) || [];
         stored.push(log);
         sessionStorage.setItem(this.historyKey, JSON.stringify(stored));
         this.history = stored;
 
-        // ☁️ Push to logs backend
         await fetch("/api/logs/save", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -102,13 +113,11 @@ export default {
         this.loading = false;
       }
     },
-
     clearHistory() {
       sessionStorage.removeItem(this.historyKey);
       this.history = [];
       this.toast("🧼 History cleared.");
     },
-
     loadLastSession() {
       const stored = JSON.parse(sessionStorage.getItem(this.historyKey)) || [];
       this.history = stored;
@@ -118,10 +127,27 @@ export default {
         this.output = last.response;
       }
     },
+    runHeartbeat() {
+      this.heartbeatInterval = setInterval(() => {
+        this.toast.info(`${this.name} still alive 🟢`);
+      }, 30000);
+    },
   },
 };
 </script>
 
 <style scoped>
-/* 🎨 Minimal scoped override if needed */
+.output {
+  padding: 1rem;
+  background: #f5f5f5;
+  min-height: 100px;
+  margin-bottom: 1rem;
+}
+.typing .dot {
+  animation: blink 1.2s infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
 </style>

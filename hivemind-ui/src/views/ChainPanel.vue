@@ -14,7 +14,6 @@
       <input v-model="step.prompt" placeholder="Prompt for this agent..." />
     </div>
 
-    <!-- ➕ Add step -->
     <button @click="addStep">➕ Add Step</button>
 
     <!-- 🌐 Base input shared by chain -->
@@ -25,51 +24,66 @@
     <button @click="runChain">▶️ Execute</button>
 
     <!-- 📤 Output display -->
+    <h3 style="margin-top: 1rem;">📤 Chain Output</h3>
     <pre class="output">{{ output }}</pre>
   </section>
 </template>
 
 <script>
 import { useToast } from "vue-toastification";
-const toast = useToast();
-toast.success("🚀 It Works!");
+import { PanelSettings } from "@/config/panelSettings.js";
+
 
 export default {
   name: "ChainPanel",
   data() {
-     return {
-      input: "",       // 🧠 User prompt
-      output: "",      // 📥 Backend response
-      toast: null,     // 🔔 Toast ref
+    return {
+      input: "",
+      output: "",
+      baseInput: "",
+      chain: [
+        { agent: "", prompt: "" },
+      ],
+      toast: null,
     };
   },
   mounted() {
-    this.toast = useToast();  // 🔌 Initialize toast on mount
+    this.toast = useToast();
+    const config = panelSettings["chain"];
+    if (config?.heartbeat) {
+      this.runChain();
+    }
   },
   methods: {
+    addStep() {
+      this.chain.push({ agent: "", prompt: "" });
+    },
     async runChain() {
       this.output = "⏳ Running chain...";
-
       try {
         const res = await fetch("/api/chain/run", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt: this.input }),
+          body: JSON.stringify({
+            prompt: this.input,
+            chain: this.chain,
+            baseInput: this.baseInput,
+          }),
         });
 
+        if (!res.ok) throw new Error(`Server error ${res.status}`);
         const data = await res.json();
         this.output = JSON.stringify(data, null, 2);
-        this.toast.success("✅ Chain executed successfully.");
+        this.toast.success("✅ Chain executed.");
       } catch (err) {
         this.output = "❌ Chain execution failed.";
-        this.toast.error("🚨 Failed to run chain.");
+        this.toast.error("🚨 Chain API error.");
         console.error(err);
       }
     },
   },
 };
 </script>
-
 
 <style scoped>
 .step {
@@ -80,12 +94,23 @@ export default {
   border-radius: 6px;
 }
 select,
-input {
+input,
+textarea {
+  display: block;
   margin-top: 0.25rem;
-  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
   background: #222;
   color: white;
   padding: 0.3rem;
   border: 1px solid #444;
+  width: 100%;
+  box-sizing: border-box;
+}
+.output {
+  background: #111;
+  color: #0f0;
+  padding: 1rem;
+  margin-top: 1rem;
+  white-space: pre-wrap;
 }
 </style>

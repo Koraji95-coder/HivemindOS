@@ -1,3 +1,44 @@
+## 🚀 v0.2.5 – 🧠 UI polish + fixed tab switching bug for v0.2.5 (2025-05-17)
+
+### 🆕 New Files
+- hivemind-ui/node_modules/.vite/deps/chunk-J4DVLWB4.js
+- hivemind-ui/node_modules/.vite/deps/chunk-J4DVLWB4.js.map
+- hivemind-ui/node_modules/.vite/deps/vue-toastification.js
+- hivemind-ui/node_modules/.vite/deps/vue-toastification.js.map
+- hivemind-ui/node_modules/.vite/deps_temp_fb63c568/chunk-J4DVLWB4.js
+- hivemind-ui/node_modules/.vite/deps_temp_fb63c568/chunk-J4DVLWB4.js.map
+- hivemind-ui/node_modules/.vite/deps_temp_fb63c568/package.json
+- hivemind-ui/node_modules/.vite/deps_temp_fb63c568/vue-toastification.js
+- hivemind-ui/node_modules/.vite/deps_temp_fb63c568/vue-toastification.js.map
+- hivemind-ui/node_modules/.vite/deps_temp_fb63c568/vue.js
+- hivemind-ui/node_modules/.vite/deps_temp_fb63c568/vue.js.map
+- hivemind-ui/src/config/panelSettings.js
+
+### 🔧 Modified Files
+- warning: in the working copy of 'hivemind-ui/node_modules/.vite/deps/_metadata.json', LF will be replaced by CRLF the next time Git touches it
+- warning: in the working copy of 'hivemind-ui/node_modules/.vite/deps/package.json', LF will be replaced by CRLF the next time Git touches it
+- warning: in the working copy of 'hivemind-ui/node_modules/.vite/deps/vue.js', LF will be replaced by CRLF the next time Git touches it
+- warning: in the working copy of 'hivemind-ui/node_modules/.vite/deps/vue.js.map', LF will be replaced by CRLF the next time Git touches it
+- .vscode/tasks.json
+- backend/__pycache__/fastapi_main.cpython-313.pyc
+- hivemind-ui/node_modules/.vite/deps/_metadata.json
+- hivemind-ui/node_modules/.vite/deps/vue.js
+- hivemind-ui/node_modules/.vite/deps/vue.js.map
+- hivemind-ui/src/App.vue
+- hivemind-ui/src/layouts/TabLayout.vue
+- hivemind-ui/src/version.js
+- hivemind-ui/src/views/AtlasPanel.vue
+- hivemind-ui/src/views/BartPanel.vue
+- hivemind-ui/src/views/ChainPanel.vue
+- hivemind-ui/src/views/CortexaPanel.vue
+- hivemind-ui/src/views/DaphnePanel.vue
+- hivemind-ui/src/views/GenericAgentPanel.vue
+- hivemind-ui/src/views/HomePanel.vue
+- hivemind-ui/vite.config.js
+- shared/meta/__pycache__/version.cpython-313.pyc
+- shared/meta/version.py
+
+---
 ## 🚀 v0.2.4 – 🚀 v0.2.4 – Injected toast notifications, session tracking, and finalized modular agent panel structure (2025-05-16)
 
 ### 🆕 New Files
