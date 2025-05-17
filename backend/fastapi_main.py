@@ -17,6 +17,7 @@ from backend.routers import daphne_router, bart_router, cortexa_router, atlas_ro
 from backend.routers import chain_router
 from backend.routers import plugin_router
 from backend.routers import chain_router
+from backend.routers import logs_router
 
 app = FastAPI(title="HivemindOS API 🧠", version="0.1.0")
 
@@ -36,3 +37,4 @@ app.include_router(atlas_router.router, prefix="/api/atlas")
 app.include_router(chain_router.router, prefix="/api/chain")
 app.include_router(plugin_router.router, prefix="/api/plugin")
 app.include_router(chain_router.router, prefix="/api/chain")
+app.include_router(logs_router.router, prefix ="/api/logs")

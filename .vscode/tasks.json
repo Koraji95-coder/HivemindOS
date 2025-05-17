@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",  // VS Code task format version, DO NOT TOUCH
-  "hivemind_version": "v0.2.2",  // 🔄 DO NOT REMOVE – gets auto-updated by version_bump.py
+  "_hivemind_version": "v0.2.2",
   "tasks": [
     {
       "label": "Run Backend (FastAPI)",

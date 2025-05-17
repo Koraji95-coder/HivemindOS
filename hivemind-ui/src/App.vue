@@ -1,106 +1,71 @@
+<!-- ====================== -->
+<!-- 🧠 App.vue -->
+<!-- Core layout & routing -->
+<!-- ====================== -->
 <template>
   <div>
-    <!-- 🧠 App Header -->
+    <!-- 💡 Top Bar / Branding -->
     <header>
-      <h1>🧠 HivemindOS {{ version }}</h1>
-      <!-- 🧭 Navigation Buttons -->
-      <nav>
-        <button
-          v-for="tab in tabs"
-          :key="tab"
-          :class="{ 'active-tab': current === tab }"
-          @click="current = tab"
-        >
-          {{ capitalize(tab) }}
-        </button>
-      </nav>
+      <h1>🧠 HivemindOS UI</h1>
     </header>
 
-    <main>
-      <!-- 🧠 Dynamic Agent Tabs -->
-      <AgentPanel
-        v-if="current === 'bart'"
-        name="Bart"
-        route="bart"
-        emoji="📊"
-      />
+    <!-- 🔁 Tab Manager Shell (tabs defined below) -->
+    <TabLayout :tabs="tabs" :currentTab="currentTab" @update:currentTab="currentTab = $event">
+      <!-- 💬 Injects matching component for active tab -->
+      <component :is="currentView" />
+    </TabLayout>
 
-      <AgentPanel
-        v-if="current === 'daphne'"
-        name="Daphne"
-        route="daphne"
-        emoji="💬"
-      />
-
-      <AgentPanel
-        v-if="current === 'cortexa'"
-        name="Cortexa"
-        route="cortexa"
-        emoji="🧬"
-      />
-
-      <AgentPanel
-        v-if="current === 'atlas'"
-        name="Atlas"
-        route="atlas"
-        emoji="🛡️"
-      />
-
-      <AgentPanel
-        v-if="current === 'chain'"
-        name="Chain"
-        route="chain"
-        emoji="🔗"
-      />
-    </main>
-
-    <!-- 🦶 Footer -->
+    <!-- 📦 Version Tag -->
     <footer>
-  <small>HivemindOS UI © 2025 — {{ version }}</small>
-</footer>
-
+      <small>HivemindOS v{{ version }}</small>
+    </footer>
   </div>
 </template>
 
 <script>
-// 🧩 Import the reusable agent component
+import TabLayout from "./components/TabLayout.vue";
+
+// 🧩 Agent Panels (modular)
 import AgentPanel from "./components/AgentPanel.vue";
 import AtlasPanel from "./components/AtlasPanel.vue";
-import ChainPanel from "./components/ChainPanel.vue";    
+import ChainPanel from "./components/ChainPanel.vue";
+
+import { version } from "./version.js"; // 📦 Unified version file
 
 export default {
   name: "App",
   components: {
+    TabLayout,
     AgentPanel,
     AtlasPanel,
     ChainPanel,
   },
   data() {
     return {
-      // 🧭 Active tab name
-      current: "bart",
+      currentTab: "bart", // 🧭 Default tab on load
+      version,            // 🔖 Pulled from version.js
 
-      // 📋 List of agents
-      tabs: ["bart", "daphne", "cortexa", "atlas", "chain"],
-      version: "v?.?",
+      // 🧠 Registered views: auto-renders in <component :is="..." />
+      tabs: [
+        { name: "bart", label: "Bart", emoji: "📊" },
+        { name: "daphne", label: "Daphne", emoji: "💬" },
+        { name: "cortexa", label: "Cortexa", emoji: "🧬" },
+        { name: "atlas", label: "Atlas", emoji: "🛡️" },
+        { name: "chain", label: "Chain", emoji: "🔗" },
+      ],
     };
   },
-  methods: {
-    // 🔡 Capitalizes the tab name for buttons
-    capitalize(name) {
-      return name.charAt(0).toUpperCase() + name.slice(1);
+  computed: {
+    currentView() {
+      switch (this.currentTab) {
+        case "bart": return "AgentPanel";
+        case "daphne": return "AgentPanel";
+        case "cortexa": return "AgentPanel";
+        case "atlas": return "AtlasPanel";
+        case "chain": return "ChainPanel";
+        default: return "AgentPanel";
+      }
     },
-  },
-mounted() {
-    // ✅ Fetch version from backend as soon as app starts
-    fetch("/api/atlas")
-      .then((res) => res.json())
-      .then((data) => {
-        this.version = data.version || "v?.?";
-      })
-      .catch(() => {
-        this.version = "unknown";
-      });
   },
 };
 </script>

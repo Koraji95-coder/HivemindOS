@@ -1,3 +1,39 @@
+## 🚀 v0.2.3 – Agent Panel Refactor – Split into Bart/Daphne/Cortexa panels + added Generic fallback for resilience (2025-05-16)
+
+### 🆕 New Files
+- (None)
+
+### 🔧 Modified Files
+- logs/hivemind.log
+- shared/meta/__pycache__/version.cpython-313.pyc
+
+---
+## 🚀 v0.2.3 – "🧩 v0.2.3 – Agent Panel Refactor + Dynamic Fallback UI (2025-05-16)
+
+### 🆕 New Files
+- backend/routers/logs_routers.py
+- hivemind-ui/src/layouts/TabLayout.vue
+- hivemind-ui/src/views/AtlasPanel.vue
+- hivemind-ui/src/views/BartPanel.vue
+- hivemind-ui/src/views/ChainPanel.vue
+- hivemind-ui/src/views/CortexaPanel.vue
+- hivemind-ui/src/views/DaphnePanel.vue
+- hivemind-ui/src/views/GenericAgentPanel.vue
+
+### 🔧 Modified Files
+- .vscode/tasks.json
+- backend/fastapi_main.py
+- hivemind-ui/src/App.vue
+- hivemind-ui/src/components/AgentPanel.vue
+- hivemind-ui/src/components/AtlasPanel.vue
+- hivemind-ui/src/components/ChainPanel.vue
+- hivemind-ui/src/components/TabLayout.vue
+- hivemind-ui/src/version.js
+- logs/hivemind.log
+- shared/meta/__pycache__/version.cpython-313.pyc
+- shared/meta/version.py
+
+---
 ## 🚀 v0.2.2 – Panel Injection & Chain UI, Version_bump commands all versions and keeps it consistent. (2025-05-16)
 
 ### 🆕 New Files
