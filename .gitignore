@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Node/Vue
+node_modules/
+dist/
+.vite/
+*.log
+
+# VSCode
+.vscode/
+.env
+.venv
+
+# Misc
+.DS_Store
+*.bak
+*.swp
+*.lock
+*.sqlite*
+hivemind-ui/node_modules/
