@@ -1,3 +1,13 @@
+## 🚀 v0.2.8 – test (2025-05-19)
+
+### 🆕 New Files
+- (None)
+
+### 🔧 Modified Files
+- hivemind-ui/src/version.js
+- shared/meta/version.py
+
+---
 ## 🚀 v0.2.7 – test (2025-05-19)
 
 ### 🆕 New Files
